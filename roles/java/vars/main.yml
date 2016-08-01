@@ -1,0 +1,7 @@
+---
+
+java:
+  version: jdk1.8.0_102
+  path: /usr/lib/jvm
+  archive_name: jdk-8u102-linux-x64.tar.gz
+  download_url: http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz
