@@ -1,0 +1,20 @@
+---
+
+- name: Create user
+  user: name=zookeeper state=present
+
+- name: Install Zookeeper
+  become_user: zookeeper
+  unarchive:
+    src=http://mirror.catn.com/pub/apache/zookeeper/stable/zookeeper-3.4.8.tar.gz
+    dest=/home/zookeeper
+    copy=no
+    creates=/home/zookeeper/zookeeper-3.4.8/bin/zkServer.sh
+
+- name: Copy Zookeeper config file
+  become_user: zookeeper
+  copy: src=zoo.cfg dest=/home/zookeeper/zookeeper-3.4.8/conf/zoo.cfg
+
+- name: Start Zookeeper
+  become_user: zookeeper
+  command: "/home/zookeeper/zookeeper-3.4.8/bin/zkServer.sh start"

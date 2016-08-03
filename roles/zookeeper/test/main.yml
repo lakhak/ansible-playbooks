@@ -1,0 +1,19 @@
+---
+
+- name: Execute Zookeeper playbook
+  hosts: all
+  roles:
+    - roles/zookeeper
+
+- name: Test Zookeeper installation
+  hosts: all
+  tasks:
+    - name: Install netcat
+      apt: name=netcat state=present
+    - name: Send message
+      shell: "echo 'ruok' | nc localhost 2181"
+      register: zookeeper
+    - name: Assert output
+      assert:
+        that:
+          - "'imok' in zookeeper.stdout"
