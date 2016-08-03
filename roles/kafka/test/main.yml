@@ -1,0 +1,31 @@
+---
+
+- name: Execute Kafka playbook
+  hosts: all
+  roles:
+    - roles/kafka
+
+- name: Test Kafka broker
+  hosts: all
+  tasks:
+    - name: Create topic
+      become_user: kafka
+      shell: >
+        /home/kafka/kafka_2.11-0.10.0.0/bin/kafka-topics.sh
+        --zookeeper localhost:2181 --create --topic testing-topic --replication-factor 1 --partitions 1
+    - name: Publish message
+      become_user: kafka
+      shell: >
+        echo "Hello, World!"
+        | /home/kafka/kafka_2.11-0.10.0.0/bin/kafka-console-producer.sh
+        --broker-list localhost:9092 --topic testing-topic > /dev/null
+    - name: Consume message
+      become_user: kafka
+      shell: >
+        /home/kafka/kafka_2.11-0.10.0.0/bin/kafka-console-consumer.sh
+        --zookeeper localhost:2181 --topic testing-topic --from-beginning --max-messages 1 --timeout-ms 3000
+      register: kafka_message
+    - name: Assert message output
+      assert:
+        that:
+          - "'Hello, World!' in kafka_message.stdout"

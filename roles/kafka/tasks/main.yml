@@ -1,0 +1,26 @@
+---
+
+- name: Create user
+  user: name=kafka state=present
+
+- name: Extract Kafka binary
+  become_user: kafka
+  unarchive:
+    src={{ kafka.download_url }}
+    dest=/home/kafka
+    copy=no
+    creates=/home/kafka/{{ kafka.version }}/bin/kafka-server-start.sh
+
+- name: Configure Kafka server
+  become_user: kafka
+  lineinfile:
+    dest=/home/kafka/{{ kafka.version }}/config/server.properties
+    line="delete.topic.enable = true"
+    state=present
+
+- name: Start Kafka server
+  become_user: kafka
+  shell: >
+    nohup /home/kafka/{{ kafka.version }}/bin/kafka-server-start.sh
+    /home/kafka/{{ kafka.version }}/config/server.properties >
+    /home/kafka/kafka.log 2>&1 &
