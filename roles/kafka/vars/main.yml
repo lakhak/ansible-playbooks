@@ -1,5 +1,6 @@
 ---
 
 kafka:
+  home: /home/kafka
   version: kafka_2.11-0.10.0.0
   download_url: http://mirror.catn.com/pub/apache/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz

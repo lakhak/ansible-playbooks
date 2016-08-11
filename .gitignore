@@ -5,3 +5,5 @@ idea/
 
 *.tar.gz
 *.retry
+
+.vagrant/

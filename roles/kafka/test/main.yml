@@ -2,7 +2,11 @@
 
 - name: Execute Kafka playbook
   hosts: all
+  vars:
+    - start_zookeeper: true
+    - start_kafka: true
   roles:
+    - roles/zookeeper
     - roles/kafka
 
 - name: Test Kafka broker

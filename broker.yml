@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: yes
+  vars:
+    - start_zookeeper: true
+    - start_kafka: true
+  roles:
+    - zookeeper
+    - kafka
