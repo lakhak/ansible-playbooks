@@ -2,6 +2,8 @@
 
 - name: Execute Zookeeper playbook
   hosts: all
+  vars:
+    - start_zookeeper: true
   roles:
     - roles/zookeeper
 

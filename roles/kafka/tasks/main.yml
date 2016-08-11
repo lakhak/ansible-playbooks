@@ -1,26 +1,34 @@
 ---
 
 - name: Create user
-  user: name=kafka state=present
+  user: name=kafka home={{ kafka.home }} state=present
 
 - name: Extract Kafka binary
   become_user: kafka
   unarchive:
     src={{ kafka.download_url }}
-    dest=/home/kafka
+    dest={{ kafka.home }}
     copy=no
-    creates=/home/kafka/{{ kafka.version }}/bin/kafka-server-start.sh
+    creates={{ kafka.home }}/{{ kafka.version }}/bin/kafka-server-start.sh
 
 - name: Configure Kafka server
   become_user: kafka
   lineinfile:
-    dest=/home/kafka/{{ kafka.version }}/config/server.properties
+    dest={{ kafka.home }}/{{ kafka.version }}/config/server.properties
     line="delete.topic.enable = true"
+    state=present
+
+- name: Configure Kafka listeners
+  become_user: kafka
+  lineinfile:
+    dest={{ kafka.home }}/{{ kafka.version }}/config/server.properties
+    line="listeners=PLAINTEXT://:9092"
     state=present
 
 - name: Start Kafka server
   become_user: kafka
   shell: >
-    nohup /home/kafka/{{ kafka.version }}/bin/kafka-server-start.sh
-    /home/kafka/{{ kafka.version }}/config/server.properties >
-    /home/kafka/kafka.log 2>&1 &
+    nohup {{ kafka.home }}/{{ kafka.version }}/bin/kafka-server-start.sh
+    {{ kafka.home }}/{{ kafka.version }}/config/server.properties >
+    {{ kafka.home }}/kafka.log 2>&1 &
+  when: start_kafka is defined and start_kafka

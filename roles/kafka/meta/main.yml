@@ -2,4 +2,3 @@
 
 dependencies:
   - { role: java }
-  - { role: zookeeper }

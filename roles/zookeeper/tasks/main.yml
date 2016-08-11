@@ -15,6 +15,15 @@
   become_user: zookeeper
   copy: src=zoo.cfg dest=/home/zookeeper/zookeeper-3.4.8/conf/zoo.cfg
 
+- name: Create data directory
+  file: path=/var/lib/zookeeper state=directory owner=zookeeper group=zookeeper mode=0775
+
 - name: Start Zookeeper
   become_user: zookeeper
-  command: "/home/zookeeper/zookeeper-3.4.8/bin/zkServer.sh start"
+  command: bin/zkServer.sh start chdir=/home/zookeeper/zookeeper-3.4.8
+  when: start_zookeeper is defined and start_zookeeper
+  register: zookeeper_started
+
+- name: Wait for Zookeeper to start
+  wait_for: path=/var/lib/zookeeper/zookeeper_server.pid state=present delay=5 timeout=30
+  when: zookeeper_started|changed
