@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-#docker run -it -v $PWD:/ansible 8689750be317 /bin/bash
-docker run -v $PWD:/ansible 8689750be317 \
+docker build docker/ -t ansible_base
+docker rm -f ansible-tests
+docker run --name ansible-tests -v $PWD:/ansible ansible_base \
     ansible-playbook -i docker/inventory roles/java/test/main.yml
