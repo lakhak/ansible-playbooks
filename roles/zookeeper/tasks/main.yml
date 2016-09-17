@@ -6,7 +6,7 @@
 - name: Install Zookeeper
   become_user: zookeeper
   unarchive:
-    src=http://mirror.catn.com/pub/apache/zookeeper/stable/zookeeper-3.4.8.tar.gz
+    src=http://mirror.catn.com/pub/apache/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz
     dest=/home/zookeeper
     copy=no
     creates=/home/zookeeper/zookeeper-3.4.8/bin/zkServer.sh
