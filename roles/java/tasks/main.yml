@@ -1,9 +1,14 @@
 ---
 
+- name: Check if java installed
+  stat: path={{ java.path }}/{{ java.version }}/bin/java
+  register: java_installation
+
 - name: Download JDK from Oracle
   command: "wget --header 'Cookie:oraclelicense=accept-securebackup-cookie' {{ java.download_url}}"
   args:
     creates: "{{ java.archive_name }}"
+  when: java_installation.stat.exists == False
 
 - name: Create JDK installation directory
   file: path={{ java.path }} state=directory mode=0755
@@ -18,3 +23,6 @@
 
 - name: Set alternatives for Java
   alternatives: name=java path={{ java.path }}/{{ java.version }}/bin/java link=/usr/bin/java
+
+- name: Delete archive
+  file: path={{ java.archive_name }} state=absent
