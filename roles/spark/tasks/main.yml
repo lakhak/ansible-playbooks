@@ -1,0 +1,7 @@
+---
+
+- name: Extract Spark
+  unarchive: src={{ spark.url }}/{{ spark.archive }} dest=/opt creates=/opt/{{ spark.directory }}/bin/spark-shell copy=no
+
+- name: Update enviroment variables
+  template: src=spark.sh.j2 dest=/etc/profile.d/spark.sh mode=0755

@@ -1,0 +1,7 @@
+---
+
+spark:
+  directory: spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}
+  archive: spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz
+  url: http://mirror.catn.com/pub/apache/spark/spark-{{ spark_version }}
+

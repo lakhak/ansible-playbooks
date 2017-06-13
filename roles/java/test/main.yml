@@ -15,4 +15,4 @@
       assert:
         that:
           - "java.rc == 0"
-          - "'java version \"1.8.0_102\"' in java.stderr"
+          - "'java version \"1.8.0_131\"' in java.stderr"
