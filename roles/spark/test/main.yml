@@ -1,0 +1,17 @@
+---
+
+- name: Execute Spark playbook
+  hosts: all
+  roles:
+    - roles/spark
+
+- name: Test Spark
+  hosts: all
+  tasks:
+    - name: Execute Spark
+      shell: . /etc/profile.d/spark.sh ; run-example SparkPi 10
+      register: spark
+    - name: Assert Spark output
+      assert:
+        that:
+          - "'Pi is roughly ' in spark.stdout"
